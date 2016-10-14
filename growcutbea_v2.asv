@@ -39,7 +39,7 @@ vez = 1;
 figure();
 %himg = imshow(labelimgc,[]);
 %figure();imshow(image);
-image4 = edge(image, 'sobel');
+image4 = edge(image, 'sobel'));
  
 %myCluster = parcluster('local');
 %myCluster.NumWorkers = 2;  %

@@ -1,6 +1,6 @@
-image2 = imread('dog.jpg');
-image2 = rgb2gray(image2);
-image = imresize(image2, 0.1);
+image = imread('mdb010.bmp');
+%image2 = rgb2gray(image2);
+%image = imresize(image2, 0.1);
 [linha, coluna, cores] = size(image);
 
 maxC = 600;
@@ -40,7 +40,7 @@ figure();
 %himg = imshow(labelimgc,[]);
 %figure();imshow(image);
 image4 = edge(image, 'sobel');
- 
+imshow(image4);
 %myCluster = parcluster('local');
 %myCluster.NumWorkers = 2;  %
 %delete(gcp);
@@ -59,15 +59,17 @@ while(sair)
                 labelimgc(i,j) = labelimg(i,j);
                 strengthimgc(i, j) = strengthimg(i, j);
                 for q = 1 : 8
-                    %maxC = max(max(image));
-                    g = 1 - (abs((image(i, j)) - (image(i + Nx(q), j + Ny(q)))) / maxC);
-                    resultado = g * strengthimg(i + Nx(q), j + Ny(q));
-                    %resultado = g * tempstr(2 + Nx(q), j + Ny(q));
-
-                    if((resultado > (strengthimg(i, j))))
-                        if((image4(i, j)) == 1)
+                    %if((image4(i, j)) == 1)
+                    if(image4(i + Nx(q), j + Ny(q)) == 1)
                            break; 
-                        else
+                    else
+                        %maxC = max(max(image));
+                        g = 1 - (abs((image(i, j)) - (image(i + Nx(q), j + Ny(q)))) / maxC);
+                        resultado = g * strengthimg(i + Nx(q), j + Ny(q));
+                        %resultado = g * tempstr(2 + Nx(q), j + Ny(q));
+
+                        if((resultado > (strengthimg(i, j))))
+                        
                             labelimgc(i,j) = labelimg(i + Nx(q), j + Ny(q));
                             %labelimgc(i,j) = templabel(2 + Nx(q), j + Ny(q));
                             %strengthimgc(i,j) = g * strengthimg(i + Nx(q), j + Ny(q));
@@ -101,4 +103,3 @@ while(sair)
     strengthimg = strengthimgc;
     
 end
-
