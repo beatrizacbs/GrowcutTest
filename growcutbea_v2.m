@@ -101,4 +101,3 @@ while(sair)
     strengthimg = strengthimgc;
     
 end
-

@@ -14,6 +14,7 @@ strengthimg = zeros(linha, coluna);
 imshow(image);
 
 npoints = 9;
+file = fopen('mdb010.txt', 'rt');
 
 %pra fora
 	[col,lin] = ginput(npoints); %da o input
