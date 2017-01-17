@@ -1,51 +1,36 @@
-image = imread('mdb010.bmp');
-%image2 = rgb2gray(image2);
-%image = imresize(image2, 0.1);
+name = 'mdb002';
+imageName = strcat(name, '.bmp');
+fileName = strcat(name, '.mat');
+image = imread(imageName);
+image = rgb2gray(image);
 [linha, coluna, cores] = size(image);
-
+labelimg = load(fileName);
 maxC = 600;
 
+%pixels de vizinhança
 Nx = [-1, -1, 1, 0, 1, 1, -1,  0]; 
 Ny = [-1, 0, -1, 1,  1, 0, 1, -1];
 	
-labelimg = zeros(linha, coluna);
+image4 = edge(image, 'sobel');
 strengthimg = zeros(linha, coluna);
-%imshow(labelimg);
-imshow(image);
 
-npoints = 9;
-file = fopen('mdb010.txt', 'rt');
-
-%pra fora
-	[col,lin] = ginput(npoints); %da o input
-    for u = 1: npoints
-        labelimg(int16(lin(u)),int16(col(u))) = 1; % atualiza label
-        strengthimg(int16(lin(u)),int16(col(u))) = 1;
+%cria a matriz de força de acordo com os pontos do arquivo
+parfor k = 1:linha
+    for s = 1:coluna
+        if(labelimg(k, s) == -1)
+            strengthimg(k, s) = 1;
+        else
+            strengthimg(k,s) = labelimg(k,s);
+        end
     end
-   
+end
 
-%pra dentro
-	[col_in,lin_in] = ginput(npoints);
-    for k = 1 : npoints
-        labelimg(int16(lin_in(k)),int16(col_in(k))) = -1;
-        strengthimg(int16(lin_in(k)),int16(col_in(k))) = 1;
-    end
-    
-%labelimgc(linha, coluna/3);
-%strengtheimgc(linha, coluna/3);
 labelimgc = labelimg;
 strengthimgc = strengthimg;
 sair = true;
 vez = 1;
 figure();
-%himg = imshow(labelimgc,[]);
-%figure();imshow(image);
-image4 = edge(image, 'sobel');
-imshow(image4);
-%myCluster = parcluster('local');
-%myCluster.NumWorkers = 2;  %
-%delete(gcp);
-%parpool('local',2);
+
 while(sair)
     
     parfor i = 2 : (linha-1)
@@ -60,17 +45,15 @@ while(sair)
                 labelimgc(i,j) = labelimg(i,j);
                 strengthimgc(i, j) = strengthimg(i, j);
                 for q = 1 : 8
-                    %if((image4(i, j)) == 1)
-                    if(image4(i + Nx(q), j + Ny(q)) == 1)
-                           break; 
-                    else
-                        %maxC = max(max(image));
-                        g = 1 - (abs((image(i, j)) - (image(i + Nx(q), j + Ny(q)))) / maxC);
-                        resultado = g * strengthimg(i + Nx(q), j + Ny(q));
-                        %resultado = g * tempstr(2 + Nx(q), j + Ny(q));
+                    %maxC = max(max(image));
+                    g = 1 - (abs((image(i, j)) - (image(i + Nx(q), j + Ny(q)))) / maxC);
+                    resultado = g * strengthimg(i + Nx(q), j + Ny(q));
+                    %resultado = g * tempstr(2 + Nx(q), j + Ny(q));
 
-                        if((resultado > (strengthimg(i, j))))
-                        
+                    if((resultado > (strengthimg(i, j))))
+                        if((image4(i, j)) == 1)
+                           break; 
+                        else
                             labelimgc(i,j) = labelimg(i + Nx(q), j + Ny(q));
                             %labelimgc(i,j) = templabel(2 + Nx(q), j + Ny(q));
                             %strengthimgc(i,j) = g * strengthimg(i + Nx(q), j + Ny(q));
@@ -103,4 +86,11 @@ while(sair)
     labelimg = labelimgc;
     strengthimg = strengthimgc;
     
+end
+
+ouro = load
+parfor h=1:linha
+    for p = 1:coluna
+        
+    end
 end

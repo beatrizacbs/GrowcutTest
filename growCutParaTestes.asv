@@ -1,53 +1,30 @@
 name = 'mdb002';
 imageName = strcat(name, '.bmp');
 fileName = strcat(name, '.mat');
-image2 = imread(imageName);
-image2 = rgb2gray(image2);
-image = imresize(image2, 0.1);
+image = imread(imageName);
+image = rgb2gray(image);
 [linha, coluna, cores] = size(image);
-labels = load(fileName);
+labelimg = load(fileName);
 maxC = 600;
 
+%pixels de vizinhança
 Nx = [-1, -1, 1, 0, 1, 1, -1,  0]; 
 Ny = [-1, 0, -1, 1,  1, 0, 1, -1];
 	
-labelimg = zeros(linha, coluna);
-strengthimg = zeros(linha, coluna);
-%imshow(labelimg);
-imshow(image);
-
-npoints = 9;
-
-%pra fora
-	[col,lin] = ginput(npoints); %da o input
-    for u = 1: npoints
-        labelimg(int16(lin(u)),int16(col(u))) = 1; % atualiza label
-        strengthimg(int16(lin(u)),int16(col(u))) = 1;
-    end
-   
-
-%pra dentro
-	[col_in,lin_in] = ginput(npoints);
-    for k = 1 : npoints
-        labelimg(int16(lin_in(k)),int16(col_in(k))) = -1;
-        strengthimg(int16(lin_in(k)),int16(col_in(k))) = 1;
-    end
-    
-%labelimgc(linha, coluna/3);
-%strengtheimgc(linha, coluna/3);
-labelimgc = labelimg;
-strengthimgc = strengthimg;
-sair = true;
-vez = 1;
-figure();
-%himg = imshow(labelimgc,[]);
-%figure();imshow(image);
 image4 = edge(image, 'sobel');
- 
-%myCluster = parcluster('local');
-%myCluster.NumWorkers = 2;  %
-%delete(gcp);
-%parpool('local',2);
+strengthimg = zeros(linha, coluna);
+
+%cria a matriz de força de acordo com os pontos do arquivo
+parfor k = 1:linha
+    for s = 1:coluna
+        if(labelimg(k, s) == -1)
+            strengthimg(k, s) = 1;
+        else
+            strengthimg(k,s) = labelimg(k,s);
+        end
+    end
+end
+
 while(sair)
     
     parfor i = 2 : (linha-1)
