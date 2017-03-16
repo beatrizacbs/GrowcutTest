@@ -1,5 +1,5 @@
 %aqui tem a parte de criação dos elementos, que no código já tem alguns
-image = imread('mdb010.bmp');
+image = imread('mdb005.bmp');
 [linha, coluna] = size(image);
 
 h = fspecial('gaussian');

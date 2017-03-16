@@ -1,9 +1,9 @@
-name = 'mdb002';
+name = 'mdb005';
 imageName = strcat(name, '.bmp');
 fileName = strcat(name, '.mat');
-image2 = imread(imageName);
-image2 = rgb2gray(image2);
-image = imresize(image2, 0.1);
+image = imread(imageName);
+%image2 = rgb2gray(image2);
+%image = imresize(image2, 0.1);
 [linha, coluna, cores] = size(image);
 labels = load(fileName);
 maxC = 600;
