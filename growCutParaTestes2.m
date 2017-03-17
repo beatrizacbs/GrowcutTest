@@ -1,4 +1,4 @@
-name = 'mdb005';
+name = 'mdb315';
 imageName = strcat(name, '.bmp');
 fileName = strcat(name, '.mat');
 image = imread(imageName);
